@@ -40,6 +40,15 @@ class Flash:
         self.cs.value(1)
         return data
 
+    # Written for 0x03 commmand
+    def read_data(self, size, addr):
+        self.cs.value(0)
+        toWrite = [addr >> 16 & 0xFF, addr >> 8 & 0xFF, addr & 0xFF]
+        self.spi.write(bytes([0x03] + toWrite))
+        data = self.spi.read(size)
+        self.cs.value(1)
+        return data
+
     # not sure abt this one
     # probably do the same thing with data=None
     def write_bulk(self, command, data):
