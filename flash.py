@@ -35,7 +35,7 @@ class Flash:
         self.cs.value(1)
         return data
 
-    # Written for the 0x02 command (PP)
+    # Written for the 0x02 command (PP) (writing)
     def page_program(self, addr, data):
         # enable writing
         self.cs.value(0)
@@ -52,12 +52,12 @@ class Flash:
         mask = 0b00000010
         read = int(read) & mask
         read = read >> 1
+
         # writing data
         if read == 1:
             lst = []
             toWrite = [addr >> 16 & 0xFF, addr >> 8 & 0xFF, addr & 0xFF]
             for i in range(len(data)):
-                print(data[i])
                 lst.append(ord(data[i]))
             self.cs.value(0)
             self.spi.write(bytes([0x02] + toWrite + lst))
@@ -66,3 +66,33 @@ class Flash:
         else:
             self.cs.value(1)
             return 0
+
+    # Written for the 0x20 (SE) (erase)
+    def sector_erase(self, addr):
+        # enable writing
+        self.cs.value(0)
+        self.spi.write(bytes([0x06]))
+        self.cs.value(1)
+
+        # check read status register
+        self.cs.value(0)
+        self.spi.write(bytes([0x05]))
+        read = self.spi.read(1)[0]
+        self.cs.value(1)
+
+        # check WEL (bit of status register)
+        mask = 0b00000010
+        read = int(read) & mask
+        read = read >> 1
+
+        # erases data
+        if read == 1:
+            toWrite = [addr >> 16 & 0xFF, addr >> 8 & 0xFF, addr & 0xFF]
+            self.cs.value(0)
+            self.spi.write(bytes([0x20] + toWrite))
+            self.cs.value(1)
+            return 1
+        else:
+            self.cs.value(1)
+            return 0
+
