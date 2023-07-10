@@ -37,13 +37,7 @@ class Flash:
 
     # Written for the 0x02 command (PP)
     def page_program(self, addr, data):
-        self.cs.value(0)
         # enable writing
-
-        self.spi.write(bytes([0x9F]))
-        print(self.spi.read(2))
-        self.cs.value(1)
-
         self.cs.value(0)
         self.spi.write(bytes([0x06]))
         self.cs.value(1)
@@ -54,7 +48,7 @@ class Flash:
         read = self.spi.read(1)[0]
         self.cs.value(1)
 
-        # check WEL
+        # check WEL (bit of status register)
         mask = 0b00000010
         read = int(read) & mask
         read = read >> 1
@@ -67,7 +61,6 @@ class Flash:
                 lst.append(ord(data[i]))
             self.cs.value(0)
             self.spi.write(bytes([0x02] + toWrite + lst))
-            # make CS high
             self.cs.value(1)
             return 1
         else:
