@@ -7,12 +7,12 @@ from machine import Pin, SPI
 import time
 
 class Flash:
-    def __init__(self):
-        self.init()
+    def __init__(self, pin):
+        self.init(pin)
 
-    def init(self):
+    def init(self, pin):
         self.spi = SPI(0, sck=Pin(2), mosi=Pin(3), miso=Pin(4), baudrate=2000000, phase=0)
-        self.cs = Pin(5, Pin.OUT, value=1)
+        self.cs = Pin(pin, Pin.OUT, value=1)
 
     def deinit(self):
         self.spi.deinit()
