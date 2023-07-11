@@ -1,3 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText 2023 Kristin Ebuengan
+# SPDX-FileCopyrightText 2023 Melody Gill
+# SPDX-FileCopyrightText 2023 Gabriel Marcano
+
+"""
+file to test the read/write/erase functions from flash.py
+"""
+
 from flash import *
 from rtc import *
 import time

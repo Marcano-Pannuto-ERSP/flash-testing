@@ -1,6 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText 2023 Kristin Ebuengan
+# SPDX-FileCopyrightText 2023 Melody Gill
+# SPDX-FileCopyrightText 2023 Gabriel Marcano
+
 """
-Library functions in Micropython to run on the RPi Pico.
-Lots copied from rtc.py
+Library functions in Micropython to run MX25V16066M2I02
+commands on the RPi Pico.
 """
 
 from machine import Pin, SPI
